@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/page/{slug}', [PageController::class, 'index'])->name('page.index');
 
 Route::get('/hello/{name?}', function (string $name = '') {
     return view('hello', ['name' => $name]);
@@ -17,6 +18,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/users', function () {
         return 'admin.users';
     });
+    Route::get('/', [\App\Http\Controllers\Admin\MainController::class, 'index']);
+    Route::get('/pages/{slug}', [\App\Http\Controllers\Admin\MainController::class, 'pages']);
 });
 
 Route::group(['prefix' => 'shop'], function () {
